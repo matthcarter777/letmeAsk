@@ -8,7 +8,6 @@ export function Button() {
   }
 
   return(
-
     <button onClick={handlerAdd}>Clique aqui {number} </button>
   )
 }

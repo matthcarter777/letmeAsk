@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import { Button } from '../components/Button';
+import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
 import logoImg from '../assets/images/logo.svg';
 
@@ -24,7 +25,7 @@ type RoomParams = {
   id: string;
 }
 
-type Question = {
+type QuestionProps = {
   id: string;
   author: {
     name: string;
@@ -40,7 +41,7 @@ export function Room() {
   const { user } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<QuestionProps[]>([]);
   const [title, setTitle] = useState('');
 
   const roomId = params.id;
@@ -62,7 +63,6 @@ export function Room() {
         }
       });
 
-      console.log(questions)
       setTitle(databaseRoom.title);
       setQuestions(parsedQuestions);
     })
@@ -128,8 +128,18 @@ export function Room() {
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>
           </div> 
         </form>
-
-        {JSON.stringify(questions)}
+        
+        <div className="question-list">
+          {questions.map(question => {
+            return (
+              <Question
+                key={question.id}  
+                content={question.content}
+                author={question.author}
+              />
+            )
+          })}
+        </div>
       </main>
     </div>
   )
